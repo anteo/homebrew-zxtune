@@ -152,9 +152,7 @@ jobs:
           brew trust anteo/zxtune
           tap_path="$(brew --repository anteo/zxtune)"
           cp Formula/zxtune123.rb "$tap_path/Formula/zxtune123.rb"
-          for bottle_json in bottles/*.bottle.json; do
-            brew bottle --merge --write --no-commit --no-all-checks "$bottle_json"
-          done
+          brew bottle --merge --write --no-commit --no-all-checks bottles/*.bottle.json
           cp "$tap_path/Formula/zxtune123.rb" Formula/zxtune123.rb
 
       - name: Publish bottle release
