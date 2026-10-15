@@ -15,4 +15,4 @@ Then play a chiptune file with:
 zxtune123 path/to/music.ay
 ```
 
-The tap currently contains `zxtune123`. A prebuilt bottle is available for Apple Silicon on macOS 27. Homebrew builds from source on other macOS versions and Intel Macs.
+The tap currently contains `zxtune123`. Prebuilt bottles are published for Apple Silicon and Intel on macOS 15 and 26. Homebrew can use a bottle from an earlier macOS release on newer versions when compatible, and builds from source when no compatible bottle is available.
