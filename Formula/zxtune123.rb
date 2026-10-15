@@ -24,6 +24,15 @@ class Zxtune123 < Formula
   patch :DATA
 
   def install
+    inreplace "include/source_location.h" do |source|
+      source.gsub!("constexpr auto ROOT = DO_LITERAL(SOURCES_ROOT, sv);", 'constexpr auto ROOT = ""sv;') ||
+        odie "Could not adjust SOURCES_ROOT for macOS"
+      source.gsub!(
+        "if constexpr (Offset == ROOT.size())",
+        "if constexpr (ROOT.empty())\n    {\n      return SourceFile<C, Head, Tail...>();\n    }\n    else if constexpr (Offset == ROOT.size())"
+      ) || odie "Could not adjust relative source path handling for macOS"
+    end
+
     dependencies = %w[boost curl flac lame libogg libvorbis openal-soft]
     include_dirs = dependencies.map { |name| Formula[name].opt_include }
     library_dirs = dependencies.map { |name| Formula[name].opt_lib }
@@ -169,32 +178,3 @@ index ffdd219b9..4c2941bbf 100644
      }
  
      std::vector<StringView> WindowsAlternatives() const override
-diff --git a/include/source_location.h b/include/source_location.h
---- a/include/source_location.h
-+++ b/include/source_location.h
-@@ -120,7 +120,11 @@ namespace Debug
- namespace Debug
- {
- #ifdef SOURCES_ROOT
- #  define STR(a) #  a
-+#  if !defined(__APPLE__)
-   constexpr auto ROOT = DO_LITERAL(SOURCES_ROOT, sv);
-+#  else
-+  constexpr auto ROOT = ""sv;
-+#  endif
- #  undef STR
- #else
-   constexpr auto ROOT = ""sv;
-@@ -130,7 +130,9 @@ namespace Debug
-   template<std::size_t Offset, typename C, C Head, C... Tail>
-   constexpr auto MakeSourceFile()
-   {
--    if constexpr (Offset == ROOT.size())
-+    if constexpr (ROOT.empty())
-+    {
-+      return SourceFile<C, Head, Tail...>();
-+    }
-+    else if constexpr (Offset == ROOT.size())
-     {
-       static_assert(Head == '/' || Head == '\\', "SOURCES_ROOT should not end with slash");
-       return SourceFile<C, Tail...>();
