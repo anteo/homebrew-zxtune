@@ -169,3 +169,32 @@ index ffdd219b9..4c2941bbf 100644
      }
  
      std::vector<StringView> WindowsAlternatives() const override
+diff --git a/include/source_location.h b/include/source_location.h
+--- a/include/source_location.h
++++ b/include/source_location.h
+@@ -120,7 +120,11 @@ namespace Debug
+ namespace Debug
+ {
+ #ifdef SOURCES_ROOT
+ #  define STR(a) #  a
++#  if !defined(__APPLE__)
+   constexpr auto ROOT = DO_LITERAL(SOURCES_ROOT, sv);
++#  else
++  constexpr auto ROOT = ""sv;
++#  endif
+ #  undef STR
+ #else
+   constexpr auto ROOT = ""sv;
+@@ -130,7 +130,9 @@ namespace Debug
+   template<std::size_t Offset, typename C, C Head, C... Tail>
+   constexpr auto MakeSourceFile()
+   {
+-    if constexpr (Offset == ROOT.size())
++    if constexpr (ROOT.empty())
++    {
++      return SourceFile<C, Head, Tail...>();
++    }
++    else if constexpr (Offset == ROOT.size())
+     {
+       static_assert(Head == '/' || Head == '\\', "SOURCES_ROOT should not end with slash");
+       return SourceFile<C, Tail...>();
