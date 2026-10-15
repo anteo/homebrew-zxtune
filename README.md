@@ -15,4 +15,4 @@ Then play a chiptune file with:
 zxtune123 path/to/music.ay
 ```
 
-The tap currently contains `zxtune123`. A desktop `zxtune-qt` formula can be added here later.
+The tap currently contains `zxtune123`. A prebuilt bottle is available for Apple Silicon on macOS 27; Homebrew builds from source on other platforms. A desktop `zxtune-qt` formula can be added here later.

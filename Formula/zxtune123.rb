@@ -6,6 +6,11 @@ class Zxtune123 < Formula
   sha256 "536cb2d551fa6f03ec8e4aa7f679ff7bf9974722c8338d8f5a1e7d74ab601e45"
   license "LGPL-3.0-only"
 
+  bottle do
+    root_url "https://github.com/anteo/homebrew-zxtune/releases/download/zxtune123-2026.10.14"
+    sha256 cellar: :any, arm64_golden_gate: "cffe407856c587a41ab8c5dba390ffe49b7b5df755b497387be1a833354238de"
+  end
+
   depends_on "boost"
   depends_on "curl"
   depends_on "flac"
@@ -47,12 +52,13 @@ class Zxtune123 < Formula
   end
 end
 
+
 __END__
 diff --git a/src/core/plugins/archives/raw_supp.cpp b/src/core/plugins/archives/raw_supp.cpp
-index 0b5d6b49d..188335366 100644
+index f4dc901f3..b78b2c71b 100644
 --- a/src/core/plugins/archives/raw_supp.cpp
 +++ b/src/core/plugins/archives/raw_supp.cpp
-@@ -427,7 +427,7 @@ namespace ZXTune::Raw
+@@ -635,7 +635,7 @@ namespace ZXTune::Raw
  
      void Move(std::size_t step)
      {
@@ -61,7 +67,7 @@ index 0b5d6b49d..188335366 100644
        {
          Dbg("Subdata is captured. Duplicate.");
          Subdata = MakePtr<ScanDataContainer>(Parent->GetData(), Subdata->GetOffset() + step);
-@@ -853,7 +853,7 @@ namespace ZXTune::Raw
+@@ -929,7 +929,7 @@ namespace ZXTune::Raw
          const std::size_t offset = subLocation->GetOffset();
          progress.Report(offset);
          const auto detectResult = usedPlugins.Detect(subLocation, callback);
@@ -70,6 +76,21 @@ index 0b5d6b49d..188335366 100644
          {
            Dbg("Sublocation is captured. Duplicate.");
            subLocation = MakePtr<ScanDataLocation>(input, offset);
+diff --git a/src/io/providers/gates/curl_api_dynamic.cpp b/src/io/providers/gates/curl_api_dynamic.cpp
+index 6c78e0ba5..300c78fa5 100644
+--- a/src/io/providers/gates/curl_api_dynamic.cpp
++++ b/src/io/providers/gates/curl_api_dynamic.cpp
+@@ -30,7 +30,7 @@ namespace IO::Curl
+ 
+     std::vector<StringView> PosixAlternatives() const override
+     {
+-      return {"libcurl.so.3"sv, "libcurl.so.4"sv};
++      return {"libcurl.so.3"sv, "libcurl.so.4"sv, "libcurl.dylib"sv, "@rpath/libcurl.dylib"sv};
+     }
+ 
+     std::vector<StringView> WindowsAlternatives() const override
+diff --git a/src/sound/backends/gates/flac_api_dynamic.cpp b/src/sound/backends/gates/flac_api_dynamic.cpp
+index a54008298..17c32ea1c 100644
 --- a/src/sound/backends/gates/flac_api_dynamic.cpp
 +++ b/src/sound/backends/gates/flac_api_dynamic.cpp
 @@ -30,7 +30,7 @@ namespace Sound::Flac
@@ -81,6 +102,8 @@ index 0b5d6b49d..188335366 100644
      }
  
      std::vector<StringView> WindowsAlternatives() const override
+diff --git a/src/sound/backends/gates/mp3_api_dynamic.cpp b/src/sound/backends/gates/mp3_api_dynamic.cpp
+index e7d2acd52..49167469e 100644
 --- a/src/sound/backends/gates/mp3_api_dynamic.cpp
 +++ b/src/sound/backends/gates/mp3_api_dynamic.cpp
 @@ -30,7 +30,7 @@ namespace Sound::Mp3
@@ -92,6 +115,8 @@ index 0b5d6b49d..188335366 100644
      }
  
      std::vector<StringView> WindowsAlternatives() const override
+diff --git a/src/sound/backends/gates/ogg_api_dynamic.cpp b/src/sound/backends/gates/ogg_api_dynamic.cpp
+index e30571579..cbb3d93e6 100644
 --- a/src/sound/backends/gates/ogg_api_dynamic.cpp
 +++ b/src/sound/backends/gates/ogg_api_dynamic.cpp
 @@ -30,7 +30,7 @@ namespace Sound::Ogg
@@ -103,6 +128,8 @@ index 0b5d6b49d..188335366 100644
      }
  
      std::vector<StringView> WindowsAlternatives() const override
+diff --git a/src/sound/backends/gates/openal_api_dynamic.cpp b/src/sound/backends/gates/openal_api_dynamic.cpp
+index 5542ba22d..dd218b7e4 100644
 --- a/src/sound/backends/gates/openal_api_dynamic.cpp
 +++ b/src/sound/backends/gates/openal_api_dynamic.cpp
 @@ -30,7 +30,8 @@ namespace Sound::OpenAl
@@ -115,6 +142,8 @@ index 0b5d6b49d..188335366 100644
      }
  
      std::vector<StringView> WindowsAlternatives() const override
+diff --git a/src/sound/backends/gates/vorbis_api_dynamic.cpp b/src/sound/backends/gates/vorbis_api_dynamic.cpp
+index ee8e799ab..659464135 100644
 --- a/src/sound/backends/gates/vorbis_api_dynamic.cpp
 +++ b/src/sound/backends/gates/vorbis_api_dynamic.cpp
 @@ -30,7 +30,7 @@ namespace Sound::Vorbis
@@ -126,6 +155,8 @@ index 0b5d6b49d..188335366 100644
      }
  
      std::vector<StringView> WindowsAlternatives() const override
+diff --git a/src/sound/backends/gates/vorbisenc_api_dynamic.cpp b/src/sound/backends/gates/vorbisenc_api_dynamic.cpp
+index ffdd219b9..4c2941bbf 100644
 --- a/src/sound/backends/gates/vorbisenc_api_dynamic.cpp
 +++ b/src/sound/backends/gates/vorbisenc_api_dynamic.cpp
 @@ -30,7 +30,7 @@ namespace Sound::VorbisEnc
@@ -134,17 +165,6 @@ index 0b5d6b49d..188335366 100644
      {
 -      return {"libvorbisenc.so.2"sv};
 +      return {"libvorbisenc.so.2"sv, "libvorbisenc.dylib"sv, "@rpath/libvorbisenc.dylib"sv};
-     }
- 
-     std::vector<StringView> WindowsAlternatives() const override
---- a/src/io/providers/gates/curl_api_dynamic.cpp
-+++ b/src/io/providers/gates/curl_api_dynamic.cpp
-@@ -30,7 +30,7 @@ namespace IO::Curl
- 
-     std::vector<StringView> PosixAlternatives() const override
-     {
--      return {"libcurl.so.3"sv, "libcurl.so.4"sv};
-+      return {"libcurl.so.3"sv, "libcurl.so.4"sv, "libcurl.dylib"sv, "@rpath/libcurl.dylib"sv};
      }
  
      std::vector<StringView> WindowsAlternatives() const override
