@@ -165,10 +165,10 @@ jobs:
           set -euo pipefail
           release_tag="zxtune123-${VERSION}"
           if gh release view "$release_tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release upload "$release_tag" bottles/*.bottle.tar.gz \
+            gh release upload "$release_tag" bottles/*.bottle*.tar.gz \
               --clobber --repo "$GITHUB_REPOSITORY"
           else
-            gh release create "$release_tag" bottles/*.bottle.tar.gz \
+            gh release create "$release_tag" bottles/*.bottle*.tar.gz \
               --title "$release_tag" \
               --notes "Homebrew bottles for zxtune123 ${VERSION}." \
               --repo "$GITHUB_REPOSITORY"
