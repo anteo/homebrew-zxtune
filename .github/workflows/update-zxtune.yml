@@ -123,7 +123,7 @@ jobs:
           name: bottles-${{ matrix.platform }}
           path: |
             *.bottle.json
-            *.bottle.tar.gz
+            *.bottle*.tar.gz
 
   publish:
     needs: [prepare, build-bottles]
@@ -149,6 +149,7 @@ jobs:
         run: |
           set -euo pipefail
           brew tap anteo/zxtune
+          brew trust anteo/zxtune
           tap_path="$(brew --repository anteo/zxtune)"
           cp Formula/zxtune123.rb "$tap_path/Formula/zxtune123.rb"
           for bottle_json in bottles/*.bottle.json; do
