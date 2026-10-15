@@ -109,10 +109,13 @@ jobs:
           VERSION: ${{ needs.prepare.outputs.version }}
         run: |
           set -euo pipefail
-          brew install --build-bottle --formula --verbose ./Formula/zxtune123.rb
+          brew tap anteo/zxtune
+          tap_path="$(brew --repository anteo/zxtune)"
+          cp Formula/zxtune123.rb "$tap_path/Formula/zxtune123.rb"
+          brew install --build-bottle --formula --verbose anteo/zxtune/zxtune123
           brew bottle --json \
             --root-url "https://github.com/${GITHUB_REPOSITORY}/releases/download/zxtune123-${VERSION}" \
-            zxtune123
+            anteo/zxtune/zxtune123
 
       - name: Upload bottle artifacts
         uses: actions/upload-artifact@v4
@@ -145,9 +148,13 @@ jobs:
       - name: Merge bottle metadata into formula
         run: |
           set -euo pipefail
+          brew tap anteo/zxtune
+          tap_path="$(brew --repository anteo/zxtune)"
+          cp Formula/zxtune123.rb "$tap_path/Formula/zxtune123.rb"
           for bottle_json in bottles/*.bottle.json; do
             brew bottle --merge --write --no-commit --no-all-checks "$bottle_json"
           done
+          cp "$tap_path/Formula/zxtune123.rb" Formula/zxtune123.rb
 
       - name: Publish bottle release
         env:
