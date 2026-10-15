@@ -162,6 +162,12 @@ jobs:
         run: |
           set -euo pipefail
           release_tag="zxtune123-${VERSION}"
+          for bottle in bottles/*.bottle*.tar.gz; do
+            published_name="${bottle/--/-}"
+            if [[ "$published_name" != "$bottle" ]]; then
+              mv "$bottle" "$published_name"
+            fi
+          done
           if gh release view "$release_tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release upload "$release_tag" bottles/*.bottle*.tar.gz \
               --clobber --repo "$GITHUB_REPOSITORY"
