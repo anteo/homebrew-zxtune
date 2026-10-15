@@ -8,7 +8,11 @@ class Zxtune123 < Formula
 
   bottle do
     root_url "https://github.com/anteo/homebrew-zxtune/releases/download/zxtune123-r5112"
-    sha256 cellar: :any, arm64_golden_gate: "c93122bd92cd30d803b29adc028f5e81b406a31d6103a9bcd65c48d94606a753"
+    rebuild 1
+    sha256 cellar: :any, arm64_tahoe:   "d8d990d08b5c1d1295efbd553a18844c752547192e088b1c8b8165cf674beeb6"
+    sha256 cellar: :any, arm64_sequoia: "7f25f00ce0fc07d67a46e23f397a06c88b4e0d8325f730bf7e08b86a0cf740bc"
+    sha256 cellar: :any, tahoe:         "4ed42fe7f4923872645c7d65bde78562fe1fe93b33ccf899ad78c1698f8ceb7a"
+    sha256 cellar: :any, sequoia:       "fc48d5847e445c550b8f1096366f2df65ab41ff21ec9b1231c5a7c614e853d4d"
   end
 
   depends_on "boost"
