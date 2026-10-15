@@ -26,11 +26,11 @@ class Zxtune123 < Formula
   def install
     inreplace "include/source_location.h" do |source|
       source.gsub!("constexpr auto ROOT = DO_LITERAL(SOURCES_ROOT, sv);", 'constexpr auto ROOT = ""sv;') ||
-        odie "Could not adjust SOURCES_ROOT for macOS"
+        odie("Could not adjust SOURCES_ROOT for macOS")
       source.gsub!(
         "if constexpr (Offset == ROOT.size())",
         "if constexpr (ROOT.empty())\n    {\n      return SourceFile<C, Head, Tail...>();\n    }\n    else if constexpr (Offset == ROOT.size())"
-      ) || odie "Could not adjust relative source path handling for macOS"
+      ) || odie("Could not adjust relative source path handling for macOS")
     end
 
     dependencies = %w[boost curl flac lame libogg libvorbis openal-soft]
