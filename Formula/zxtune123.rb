@@ -1,13 +1,13 @@
 class Zxtune123 < Formula
   desc "Command-line chiptune player and converter"
   homepage "https://zxtune.ru"
-  url "https://github.com/vitamin-caig/zxtune/archive/ee9db2825c605c74163df1fa407af705c9e02342.tar.gz"
-  version "2026.10.14"
-  sha256 "536cb2d551fa6f03ec8e4aa7f679ff7bf9974722c8338d8f5a1e7d74ab601e45"
+  url "https://github.com/vitamin-caig/zxtune/archive/refs/tags/r5112.tar.gz"
+  version "r5112"
+  sha256 "82c61605a344dc0396a4187e741a7d504388a1d86876e30331187e8f6221ccd8"
   license "LGPL-3.0-only"
 
   bottle do
-    root_url "https://github.com/anteo/homebrew-zxtune/releases/download/zxtune123-2026.10.14"
+    root_url "https://github.com/anteo/homebrew-zxtune/releases/download/zxtune123-r5112"
     sha256 cellar: :any, arm64_golden_gate: "cffe407856c587a41ab8c5dba390ffe49b7b5df755b497387be1a833354238de"
   end
 
@@ -37,6 +37,7 @@ class Zxtune123 < Formula
              "includes.dirs.darwin=#{include_dirs.join(' ')}",
              "libraries.dirs.darwin=#{library_dirs.join(' ')}",
              "cxx_flags=-DFMT_CONSTEVAL=",
+             "root.version=r5112",
              "ld_flags=#{rpaths.join(' ')}"
     end
 

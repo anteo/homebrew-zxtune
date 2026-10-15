@@ -2,6 +2,8 @@
 
 Homebrew formulae for ZXTune applications.
 
+The command-line formula follows the latest upstream release, currently `r5112`.
+
 ## Install the command-line player
 
 ```sh
